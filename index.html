@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        padding-top: 50px;
+      }
+
+      .bodyNegro {
+        background-color: #333333;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .bodyBlanco {
+        background-color: #ffffff;
+        color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .padre {
+        margin: 8px;
+        padding: 8px;
+        border: 1px solid black;
+        border-radius: 8px;
+        width: 300px;
+      }
+
+      .fila {
+        /* display: flex; */
+        margin: 8px;
+        padding: 8px;
+        border: 1px solid black;
+        border-radius: 8px;
+        background-color: #868686;
+      }
+
+      .negro {
+        background-color: black;
+        color: white;
+      }
+
+      .blanco {
+        background-color: white;
+        color: black;
+      }
+
+      /* SWITCH */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+      }
+
+      /* Hide default HTML checkbox */
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      /* The slider */
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      input:checked + .slider {
+        background-color: #2196f3;
+      }
+
+      input:focus + .slider {
+        box-shadow: 0 0 1px #2196f3;
+      }
+
+      input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+      }
+
+      /* Rounded sliders */
+      .slider.round {
+        border-radius: 34px;
+      }
+
+      .slider.round:before {
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+
+  <body class="bodyBlanco"></body>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+</html>
+<script>
+  const ip = "172.16.248.100";
+  const url = "http://" + ip + ":4646/";
+
+  var color = "blanco";
+
+  const capitanes = [
+<<<<<<< HEAD
+    { nombre: "Jorge", color: "negro" },
+    { nombre: "Ander", color: "blanco" },
+=======
+    { nombre: "Kulentxo", color: "negro" },
+    { nombre: "Jenni", color: "blanco" },
+>>>>>>> 9e25b89d1b5095db57ac9c72e3bfceb63844cbe8
+  ];
+
+  $(document).ready(
+    (inicio = async () => {
+      const jugadores = await obtenerJugadores();
+      mostrarJugadores(jugadores);
+      cambiarEstiloJugadores(jugadores);
+
+      setInterval(ciclo, 100);
+    })
+  );
+
+  const ciclo = async () => {
+    const jugadores = await obtenerJugadores();
+    actualizarJugadores(jugadores);
+    cambiarEstiloJugadores(jugadores);
+  };
+
+  const obtenerJugadores = async () => {
+    const response = await fetch(url + "jugadores");
+    const jugadores = await response.json();
+    cargarCapitan();
+    return jugadores;
+  };
+
+  const mostrarJugadores = (jugadores) => {
+    let html = `<div class="padre">
+            <h2 style="text-align: center">Selección de jugadores</h2>
+            <div style="width:100%;display:flex;justify-content:center">
+            <label>Capitán: &nbsp;</label><span id="nombreCapitan"></span>
+            </div>
+            <div style="width:100%;display:flex;justify-content:center">
+              <label class="switch">
+                  <input type="checkbox" id="selector">
+                  <span class="slider round" ></span>
+              </label>
+            </div>
+        `;
+    jugadores.forEach((element, index) => {
+<<<<<<< HEAD
+      html += `
+      <div style="display:flex;flex-direction-column;" id="fila${index}" role="button">
+        <div style="flex:1;text-align:center" class="fila" id="tNombre${
+          element[0].nombre
+        }" fila="${index}" puesto="${0}">
+            ${element[0].nombre}
+        </div>
+        <div  style="flex:1;text-align:center" class="fila" id="tNombre${
+          element[1].nombre
+        }"  fila="${index}" puesto="${1}">
+=======
+      let id0 = element[0].nombre.replace(/ /g,'');
+      let id1 = element[1].nombre.replace(/ /g,'');
+      html += `
+      <div style="display:flex;flex-direction-column;" id="fila${index}" role="button">
+        <div style="flex:1;text-align:center" class="fila" id="tNombre${id0}" fila="${index}" puesto="${0}">
+            ${element[0].nombre}
+        </div>
+        <div  style="flex:1;text-align:center" class="fila" id="tNombre${id1}" fila="${index}" puesto="${1}">
+>>>>>>> 9e25b89d1b5095db57ac9c72e3bfceb63844cbe8
+            ${element[1].nombre}
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+    $("body").html(html);
+
+    $(`#selector`).on("change", () => {
+      //console.log($("#selector").is(":checked"));
+      if (color == "blanco") {
+        color = "negro";
+        $("body").removeClass();
+        $("body").addClass("bodyNegro");
+        $(".fila").css("border-color", "white");
+      } else {
+        color = "blanco";
+        $("body").removeClass();
+        $("body").addClass("bodyBlanco");
+        $(".fila").css("border-color", "black");
+      }
+      cargarCapitan();
+    });
+
+    $(".fila").on(
+      "click",
+      (funcion = async (item) => {
+        let fila = $(item.target).attr("fila");
+        let puesto = $(item.target).attr("puesto");
+        let name = $(item.target).html().trim();
+        await fetch(url + "cambiar", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ nombre: name, color: color }),
+        });
+        let res = $(`[fila='${fila}'][puesto='${puesto == 0 ? 1 : 0}']`);
+        //console.log(name + " " + color);
+        name = $(res).html().trim();
+        color2 = color == "blanco" ? "negro" : "blanco";
+        //console.log(name + " " + color2);
+        await fetch(url + "cambiar", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ nombre: name, color: color2 }),
+        });
+      })
+    );
+  };
+
+  const actualizarJugadores = (jugadores) => {
+    jugadores.forEach((element) => {
+<<<<<<< HEAD
+      $(`#tColor${element[0].nombre}`).html(element[0].color);
+      $(`#tColor${element[1].nombre}`).html(element[1].color);
+=======
+      $(`#tColor${element[0].nombre.replace(/ /g,'')}`).html(element[0].color);
+      $(`#tColor${element[1].nombre.replace(/ /g,'')}`).html(element[1].color);
+>>>>>>> 9e25b89d1b5095db57ac9c72e3bfceb63844cbe8
+    });
+  };
+
+  const cambiarEstiloJugadores = (jugadores) => {
+    jugadores.forEach((element) => {
+      if (element.color != "") {
+        //console.log(element);
+<<<<<<< HEAD
+        $(`#tNombre${element[0].nombre}`).removeClass();
+        $(`#tNombre${element[0].nombre}`).addClass("fila");
+        $(`#tNombre${element[0].nombre}`).addClass(element[0].color);
+        $(`#tNombre${element[1].nombre}`).removeClass();
+        $(`#tNombre${element[1].nombre}`).addClass("fila");
+        $(`#tNombre${element[1].nombre}`).addClass(element[1].color);
+=======
+        $(`#tNombre${element[0].nombre.replace(/ /g,'')}`).removeClass();
+        $(`#tNombre${element[0].nombre.replace(/ /g,'')}`).addClass("fila");
+        $(`#tNombre${element[0].nombre.replace(/ /g,'')}`).addClass(element[0].color);
+        $(`#tNombre${element[1].nombre.replace(/ /g,'')}`).removeClass();
+        $(`#tNombre${element[1].nombre.replace(/ /g,'')}`).addClass("fila");
+        $(`#tNombre${element[1].nombre.replace(/ /g,'')}`).addClass(element[1].color);
+>>>>>>> 9e25b89d1b5095db57ac9c72e3bfceb63844cbe8
+      }
+    });
+  };
+
+  const cargarCapitan = () => {
+    if (capitanes[0].color == color) {
+      $(`#nombreCapitan`).html(capitanes[0].nombre);
+    } else {
+      $(`#nombreCapitan`).html(capitanes[1].nombre);
+    }
+  };
+</script>
